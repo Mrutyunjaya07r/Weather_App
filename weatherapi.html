@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: url('https://th.bing.com/th/id/R.0c75cfb96ec8dec51a51836d02bc38cf?rik=ZyLx6DekRpCiqA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f07%2fWeather-Desktop-Picture.jpg&ehk=di0WfDJwu%2b77RhSlqdYV3GJWwnabD8X6lt5sN4fgIgU%3d&risl=&pid=ImgRaw&r=0');
+            background-size: cover;
+            color: rgb(44, 43, 42);
+        }
+        p{
+            font-size: 30px;
+        }
+        .container{
+            height: 400px;
+            width: 600px;
+            
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+
+            position: relative;
+            top:100px;
+            left: 450px;
+            padding: 30px;
+            border: 2px solid black;
+            border-radius: 1rem;
+        }
+        .container:hover{
+            border: 2px solid orange;
+        }
+        h1{
+            color: yellow;
+        }
+     
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 50px;">Weather App</h1>
+    
+        <div class="container">
+            <p class="tempture">Tempture is: </p>
+            <p class="cityname">City: </p>
+            <p class="sun">
+                <p class="sunr">Sunrise: </p>
+                <p class="suns">Sunset: </p>
+            </p>
+            <p class="wind">Wind Direction: </p>
+        </div>
+    
+   
+    <script>
+        let cityname=prompt("enter city name: ");
+        let xhr=new XMLHttpRequest();
+        let url=`https://api.weatherbit.io/v2.0/current?lat=35.7796&lon=-78.6382&key=0d854daed68e4e3dbd669c558076f660&include=minutely&city=${cityname}`;
+        xhr.open('GET',url);
+        xhr.onreadystatechange=function(){
+            console.log(xhr.readyState);
+            if(xhr.readyState===4 && xhr.status==200){
+                let data=JSON.parse(this.responseText);
+                console.log(typeof data);
+                console.log(data.data[0].temp);
+                console.log(data.data[0].city_name);
+                console.log(this.responseText);
+                const temp=document.querySelector(".tempture");
+                temp.innerHTML=`Tempture is: ${data.data[0].temp} Degree Celcius`;
+                const city=document.querySelector('.cityname');
+                city.innerHTML=`City: ${data.data[0].city_name}`;
+                const sunr=document.querySelector(".sunr");
+                sunr.innerHTML=`Sunrise is at: ${data.data[0].sunrise}`
+                const suns=document.querySelector('.suns');
+                suns.innerHTML=`Sunset is at: ${data.data[0].sunset}`
+                const wind=document.querySelector('.wind');
+                wind.innerHTML=`Windspeed is: ${data.data[0].wind_cdir_full}`
+            }
+        }
+        xhr.send();
+    </script>
+</body>
+</html>
